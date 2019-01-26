@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Archive extends Model
 {
+    protected $fillable = ['channel_id', 'value', 'date', 'longitude', 'latitude', 'status_id'];
+
     protected $dates = [
         'created_at',
         'updated_at',
@@ -14,11 +16,11 @@ class Archive extends Model
 
     public function channel()
     {
-        return $this->belongsTo('App\Channel');
+        return $this->belongsTo(Channel::class);
     }
 
     public function status()
     {
-        return $this->belongsTo('App\Status');
+        return $this->belongsTo(Status::class);
     }
 }

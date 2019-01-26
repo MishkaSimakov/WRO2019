@@ -15,19 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       factory(Archive::class, 10)->create()->each(
-            function ($archive) {
-                DB::table('currents')->insert([
-                    'channel_id' => $archive->channel_id,
-                    'value' => $archive->value,
-                    'date' => $archive->date,
-                    'longitude' => $archive->longitude,
-                    'latitude' => $archive->latitude,
-                    'status_id' => $archive->status_id,
-                    'created_at' => $archive->created_at,
-                    'updated_at' => $archive->updated_at
-                ]);
-            }
-        );
+       factory(Current::class, 10)->create();
     }
 }

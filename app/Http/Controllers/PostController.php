@@ -10,6 +10,7 @@ use App\Post;
 use App\Sensor;
 use App\Unit;
 use function compact;
+use function dd;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,43 +22,36 @@ use function view;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $posts = Post::all();
+
+        if ($request->name) {
+            $posts = $posts->where('name', $request->name);
+        }
 
         return view('posts.index', compact('posts'));
     }
 
     public function show(Post $post)
     {
-        $channels = Channel::all()->where('id', $post->id);
+        $post->load('archives.channel.sensor');
 
-        foreach ($channels as $channel) {
-            $archives = Archive::all()->where('channel_id', $channel->id);
+        foreach ($post->channels as $channel) {
+            $graph[$channel->id] = $channel->graph;
         }
 
-        $lava = new Lavacharts; // See note below for Laravel
+        return view('posts.show', compact('post', 'lava'));
+    }
 
-        $population = $lava->DataTable();
+    public function create(Request $request)
+    {
+        $post = Post::make();
 
-        $population->addDateColumn('Year')->addNumberColumn('Number of People')
-            ->addRow(['2006', 623452])
-            ->addRow(['2007', 685034])
-            ->addRow(['2008', 716845])
-            ->addRow(['2009', 757254])
-            ->addRow(['2010', 778034])
-            ->addRow(['2011', 792353])
-            ->addRow(['2012', 839657])
-            ->addRow(['2013', 842367])
-            ->addRow(['2014', 873490]);
+        $post->name = $request->name;
 
-        $lava->AreaChart('Population', $population, [
-            'title' => 'Population Growth',
-            'legend' => [
-                'position' => 'in'
-            ]
-        ]);
+        $post->save();
 
-        return view('posts.show', compact('archives', 'post', 'population', 'lava'));
+        return redirect(route('create'));
     }
 }

@@ -1,15 +1,34 @@
 @include('partials.header')
 
-<h1>{{ $post->name }}</h1>
-<h2>Просмотр значений</h2>
+<h1 class="header">{{ $post->name }}</h1>
 
-@foreach($archives as $archive)
-<a href="{{ $archive->channel->url }}"><h2>{{ $archive->channel->sensor->name }}:  {{ $archive->value }} {{ $archive->channel->sensor->units }}</h2></a>
-<time title="{{ $archive->date }}">{{ $archive->date }}</time>
+@foreach($post->channels as $channel)
+  <div class="box">
+    <h2><a href="{{ $channel->url }}"><span>{{ $channel->sensor->name }}</span></a></h2>
+
+  <div class="hide">
+  <ul>
+  @foreach($channel->archives as $archive)
+    <li>
+      <a href="{{ $archive->status->url }}">
+        <h2 style="color: {{ $archive->status->color }}" title="{{ $archive->status->name }}">
+          {{ $archive->value }} {{ $archive->channel->sensor->units }}
+
+          <time>{{ $archive->date->format('d-m-y H:i') }}</time>
+        </h2>
+      </a>
+    </li>
+  @endforeach
+  </ul>
+
+  <hr>
+
+  <div id="graph_div_{{ $channel->id }}"></div>
+
+  </div>
+  </div>
+
+  {!! \Lava::render('AreaChart', 'graph' . $channel->id, 'graph_div_'.$channel->id) !!}
 @endforeach
-
-<div id="pop_div"></div>
-
-<?= $lava->render('AreaChart', 'Population', 'pop_div') ?>
 
 @include('partials.footer')

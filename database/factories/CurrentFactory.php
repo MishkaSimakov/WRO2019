@@ -1,7 +1,9 @@
 <?php
 
+use App\Archive;
 use App\Channel;
 use App\Current;
+use App\Sensor;
 use App\Status;
 use Faker\Generator as Faker;
 
