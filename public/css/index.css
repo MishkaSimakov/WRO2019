@@ -113,3 +113,9 @@ label {
 .margin-bottom {
     margin-bottom: 50px;
 }
+
+.login-form {
+    position: absolute;
+    top: 150px;
+    left: 575px;
+}

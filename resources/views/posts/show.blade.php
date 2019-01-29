@@ -28,7 +28,7 @@
   </div>
   </div>
 
-  {!! \Lava::render('AreaChart', 'graph' . $channel->id, 'graph_div_'.$channel->id) !!}
+  {!! \Lava::render('LineChart', 'graph' . $channel->id, 'graph_div_'.$channel->id) !!}
 @endforeach
 
 @include('partials.footer')

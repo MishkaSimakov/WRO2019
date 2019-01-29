@@ -39,16 +39,16 @@ class Channel extends Model
 
         $graph = $lava->DataTable();
 
-        $graph->addDateColumn('Date')->addNumberColumn($this->sensor->name);
+        $graph->addDateColumn('Date')->addNumberColumn($this->sensor->name)->addNumberColumn('Аварийная уставка')->addNumberColumn('Предупредительная уставка');
 
         foreach ($this->archives as $archive) {
-            $graph->addRow([$archive->date, $archive->value]);
+            $graph->addRow([$archive->date, $archive->value, $archive->channel->precautionary_point, $archive->channel->emergency_point]);
         }
 
-        \Lava::AreaChart('graph' . $this->id, $graph, [
+        \Lava::LineChart('graph' . $this->id, $graph, [
             'title' => $this->sensor->name,
             'legend' => [
-                'position' => 'in'
+                'position' => 'top'
             ]
         ]);
 
