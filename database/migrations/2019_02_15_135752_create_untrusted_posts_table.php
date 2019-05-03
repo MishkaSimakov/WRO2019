@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChannelsTable extends Migration
+class CreateUntrustedPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateChannelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('channels', function (Blueprint $table) {
+        Schema::create('untrusted_posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('post_id');
-            $table->unsignedInteger('sensor_id');
-            $table->integer('periodicity');
-            $table->float('precautionary_point');
-            $table->float('emergency_point');
+            $table->string('name');
+            $table->string('mac_address');
+            $table->string('code');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateChannelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('channels');
+        Schema::dropIfExists('untrusted_posts');
     }
 }

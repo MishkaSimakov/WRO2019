@@ -8,6 +8,7 @@ $factory->define(Sensor::class, function (Faker $faker) {
         'name' => $faker->randomElement(['температура', 'Давление', 'Радиоактивность', 'Загазованность', 'Уровень воды']),
         'min_value' => $faker->randomFloat(null, 0, 50),
         'max_value' => $faker->randomFloat(null, 50, 100),
-        'units' => $faker->word()
+        'units' => $faker->word(),
+        'model' => 'BH1750',
     ];
 });

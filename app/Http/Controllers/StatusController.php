@@ -19,6 +19,8 @@ class StatusController extends Controller
     {
         $status->update(['name' => $request->name]);
         $status->update(['color' => $request->color]);
+        $status->update(['issue' => $request->issue]);
+        $status->update(['code' => $request->code]);
 
         return redirect(route('statuses.show', $status));
     }
@@ -28,7 +30,12 @@ class StatusController extends Controller
         $status = Status::make();
 
         $status->name = $request->name;
-        $status->color = $request->color;
+
+        if ($status->color) {
+            $status->color = $request->color;
+        } else {
+            $status->color = "#000000";
+        }
 
         $status->save();
 

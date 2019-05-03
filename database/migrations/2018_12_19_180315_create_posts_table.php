@@ -16,6 +16,10 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('mac_address');
+            $table->float('default_longitude');
+            $table->float('default_latitude');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

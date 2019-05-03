@@ -19,6 +19,7 @@ class CreateSensorsTable extends Migration
             $table->float('max_value');
             $table->float('min_value');
             $table->string('units');
+            $table->string('model');
             $table->timestamps();
         });
     }

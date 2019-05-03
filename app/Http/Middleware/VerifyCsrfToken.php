@@ -19,6 +19,11 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'http://digcity.000webhostapp.com/posts/create',
+        'http://digcity.000webhostapp.com/currents/create',
+        'http://digcity.000webhostapp.com/channels/create',
+        'http://digcity.000webhostapp.com/statuses/create',
+        'http://digcity.000webhostapp.com/sensors/create',
+        'http://digcity.000webhostapp.com/upload',
     ];
 }

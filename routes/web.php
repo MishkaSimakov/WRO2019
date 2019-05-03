@@ -13,29 +13,33 @@
 
 Route::get('', 'WelcomeController@index');
 
-//crate archive
-Route::get('/create', 'CurrentController@index')->name('create')->middleware('auth');
-Route::post('currents/create', 'CurrentController@create')->name('currents.create');
-
 //posts
-Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
-Route::get('/posts', 'PostController@index')->name('posts');
-Route::post('/posts/create', 'PostController@create')->name('posts.create');
+Route::post('/posts/confirmation', 'PostController@confirm')->name('posts.confirm')->middleware('auth');
+Route::get('/posts/confirmation', 'PostController@confirmation')->name('posts.confirmation')->middleware('auth');
 
+Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
+Route::get('/posts/{post}/edit', 'PostController@edit')->name('posts.edit');
+
+Route::get('/posts', 'PostController@index')->name('posts');
 
 //channels
+Route::get('/channels/periodicity', 'ChannelController@getPeriodicity');
 Route::get('/channels/{channel}', 'ChannelController@show')->name('channels.show');
 Route::get('/channels/{channel}/edit', 'ChannelController@update')->name('channels.edit');
-Route::post('/channels/create', 'ChannelController@create')->name('channels.create');
 
 
 //statuses
 Route::get('/statuses/{status}', 'StatusController@show')->name('statuses.show')->middleware('auth');;
 Route::get('/statuses/{status}/edit', 'StatusController@update')->name('statuses.edit')->middleware('auth');;
-Route::post('/statuses/create', 'StatusController@create')->name('statuses.create');
 
+Route::post('/upload', 'CurrentController@upload')->name('update');
 
-//sensors
-Route::post('/sensors/create', 'SensorController@create')->name('sensors.create');
+Route::get('/date', 'CurrentController@date');
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/load', 'PostController@load')->name('data.load');
+Route::get('/chart', 'ChannelController@getChart')->name('channels.chart');
+Route::get('/search', 'WelcomeController@search')->name('search');
 
 Auth::routes();
