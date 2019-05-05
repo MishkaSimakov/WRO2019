@@ -49,19 +49,10 @@ class Post extends Model
         return optional($this->current());
     }
 
-    static function getId(Request $request)
+    static function getId($mac_address)
     {
-        if (Post::where('mac_address', '=', $request->mac_address)->exists() == true) {
-            $post_id = Post::where('mac_address', $request->mac_address)->first()->id;
-        } elseif (Untrusted_post::where('mac_address', '=', $request->mac_address)->exists() == false) {
-            $post = Untrusted_post::make();
-
-            $post->name = $request->mac_address;
-            $post->mac_address = $request->mac_address;
-
-            $post->save();
-
-            $post_id = null;
+        if (Post::where('mac_address', '=', $mac_address)->exists() == true) {
+            $post_id = Post::where('mac_address', $mac_address)->first()->id;
         }
 
         return $post_id;

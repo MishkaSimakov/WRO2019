@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('mac_address');
+            $table->integer('code');
             $table->float('default_longitude');
             $table->float('default_latitude');
             $table->integer('user_id');

@@ -26,12 +26,17 @@ class WelcomeController extends Controller
     {
         $query = '%' . $request->get('query') . '%';
         $html = '<h1 class="text-center">Результаты поиска по "' . $request->get('query') . '"</h1>';
-        $html .= '<h1 class="text-center">Посты</h1>';
 
         $posts = Post::where('name', 'like', $query)->get();
 
-        foreach ($posts as $post) {
-            $html .= '<h2 class="ml-2"><a href="' . $post->url . '">' . $post->name . '</a></h2>';
+        if ($posts->count() == 0) {
+            $html .= '<h1 class="text-center">Ничего не найдено</h1>';
+        } else {
+            $html .= '<h1 class="text-center">Посты</h1>';
+
+            foreach ($posts as $post) {
+                $html .= '<h2 class="ml-2"><a href="' . $post->url . '">' . $post->name . '</a></h2>';
+            }
         }
 
         echo json_encode($html);

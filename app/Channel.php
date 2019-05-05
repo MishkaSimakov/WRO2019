@@ -42,8 +42,8 @@ class Channel extends Model
         return route('channels.show', compact('this'));
     }
 
-    static function getId(Request $request, $post_id) {
-        $sensor_id = Sensor::getId($request);
+    static function getId($sensor_name, $post_id) {
+        $sensor_id = Sensor::getId($sensor_name);
 
         if (Channel::where([['post_id', $post_id], ['sensor_id', $sensor_id]])->exists() == true) {
             $channel_id = Channel::where([['post_id', $post_id], ['sensor_id', $sensor_id]])->first()->id;

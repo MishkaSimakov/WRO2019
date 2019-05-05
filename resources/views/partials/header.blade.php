@@ -54,14 +54,12 @@
                     Мои посты
                   </a>
 
-                    <a class="dropdown-item" href="{{ route('posts.confirmation') }}">
+                    <a class="dropdown-item" href="{{ route('posts.adding') }}">
                       Добавить пост
                     </a>
 
                   <form id="our_post-form" action="{{ route('posts') }}" method="GET" style="display: none;">
                     <input name="user_id" class="hidden" value="{{ Auth::user()->id }}">
-
-                    @csrf
                   </form>
                   @endauth
                 </div>
@@ -72,7 +70,7 @@
             <ul class="navbar-nav ml-auto">
               <form class="form-inline">
                 <i class="fas fa-search" aria-hidden="true"></i>
-                <input oninput="search($('#serch').val())" class="form-control form-control-sm w-75" id="serch" type="text" placeholder="Искать" aria-label="Search">
+                <input onclick="search($('#serch').val())" oninput="search($('#serch').val())" class="form-control form-control-sm w-75" id="serch" type="text" placeholder="Искать" aria-label="Search">
               </form>
 
               <!-- Authentication Links -->

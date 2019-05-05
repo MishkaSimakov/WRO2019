@@ -14,8 +14,10 @@
 Route::get('', 'WelcomeController@index');
 
 //posts
-Route::post('/posts/confirmation', 'PostController@confirm')->name('posts.confirm')->middleware('auth');
-Route::get('/posts/confirmation', 'PostController@confirmation')->name('posts.confirmation')->middleware('auth');
+Route::get('/posts/adding', 'PostController@adding')->name('posts.adding')->middleware('auth');
+Route::post('/posts/confirm', 'PostController@confirm')->name('posts.confirm')->middleware('auth');
+
+Route::post('admin/untrusted_post/adding', 'PostController@add_untrusted')->name('admin.add_untrusted')->middleware('admin');
 
 Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
 Route::get('/posts/{post}/edit', 'PostController@edit')->name('posts.edit');
@@ -29,10 +31,10 @@ Route::get('/channels/{channel}/edit', 'ChannelController@update')->name('channe
 
 
 //statuses
-Route::get('/statuses/{status}', 'StatusController@show')->name('statuses.show')->middleware('auth');;
-Route::get('/statuses/{status}/edit', 'StatusController@update')->name('statuses.edit')->middleware('auth');;
+Route::get('/statuses/{status}', 'StatusController@show')->name('statuses.show')->middleware('auth');
+Route::get('/statuses/{status}/edit', 'StatusController@update')->name('statuses.edit')->middleware('auth');
 
-Route::post('/upload', 'CurrentController@upload')->name('update');
+Route::post('/upload', 'CurrentController@upload')->name('upload');
 
 Route::get('/date', 'CurrentController@date');
 

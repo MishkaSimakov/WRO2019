@@ -8,6 +8,7 @@ use App\Post;
 use App\Sensor;
 use App\Status;
 use App\Untrusted_post;
+use function explode;
 use Illuminate\Http\Request;
 use function route;
 use function view;
@@ -42,41 +43,40 @@ class CurrentController extends Controller
 
     public function upload(Request $request)
     {
-        $post_id = Post::getId($request);
+        $message = $request->message;
+        $signature = $request->signature;
 
-        if ($post_id !== null) {
-            $channel_id = Channel::getId($request, $post_id);
+        $message2 = explode('|', $message);
 
-            $current = Current::make();
+        $mac_address = $message2[0];
+        $sensor_name = $message2[1];
+        $date = $message2[2];
+        $value = $message2[3];
+        $longitude = $message2[4];
+        $latitude = $message2[5];
 
-            $current->channel_id = $channel_id;
-            $current->value = $request->value;
-            $current->date = $request->date;
-            $current->longitude = $request->longitude;
-            $current->latitude = $request->latitude;
+        $post_id = Post::getId($mac_address);
 
-            /*$current->status_id = 6;
+        $secretKey = Post::all()->where('id', $post_id)->first()->code();
 
-            if ($request->longitude == 200) {
-                $current->status_id = 5;
+        if (hash('md5', $message . $secretKey) == $signature) {
+          if ($post_id !== null) {
+                $channel_id = Channel::getId($sensor_name, $post_id);
+
+                $current = Current::make();
+
+                $current->channel_id = $channel_id;
+                $current->value = $value;
+                $current->date = $date;
+                $current->longitude = $longitude;
+                $current->latitude = $latitude;
+
+                foreach (Status::all() as $status) {
+                    eval($status->code);
+                }
+
+                $current->save();
             }
-
-
-            if (Channel::where('id', $channel_id)->first()->emergency_point < $request->value) {
-                $current->status_id = 1;
-            } elseif (Channel::where('id', $channel_id)->first()->precautionary_point < $request->value) {
-                $current->status_id = 3;
-            }
-
-            if ((Channel::where('id', $channel_id)->first()->sensor->max_value < $request->value) || (Channel::where('id', $channel_id)->first()->sensor->min_value > $request->value)) {
-                $current->status_id = 4;
-            }*/
-
-            foreach (Status::all() as $status) {
-                eval($status->code);
-            }
-
-            $current->save();
         }
     }
 

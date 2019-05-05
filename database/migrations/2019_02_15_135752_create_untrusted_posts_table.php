@@ -15,7 +15,6 @@ class CreateUntrustedPostsTable extends Migration
     {
         Schema::create('untrusted_posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
             $table->string('mac_address');
             $table->string('code');
             $table->timestamps();

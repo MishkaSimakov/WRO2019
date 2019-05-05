@@ -60,10 +60,12 @@
 
             <div id="graph{{ $channel->id }}"></div>
 
-            <a href="" class="spoiler_links_day" onclick="loadData({{ $channel->id }}, 1)">за день</a>
-            <a href="" class="spoiler_links_week" onclick="loadData({{ $channel->id }}, 7)">за неделю</a>
-            <a href="" class="spoiler_links_year" onclick="loadData({{ $channel->id }}, 365)">за год</a>
-            <a href="" class="spoiler_links_all" onclick="loadData({{ $channel->id }}, 'all')">за всё время</a>
+          <ul class="list-inline mb-0 text-left">
+            <li class="list-inline-item"><a href="" class="spoiler_links_day" onclick="loadData({{ $channel->id }}, 1)">за день</a></li>
+            <li class="list-inline-item"><a href="" class="spoiler_links_week" onclick="loadData({{ $channel->id }}, 7)">за неделю</a></li>
+            <li class="list-inline-item"><a href="" class="spoiler_links_year" onclick="loadData({{ $channel->id }}, 365)">за год</a></li>
+            <li class="list-inline-item"><a href="" class="spoiler_links_all" onclick="loadData({{ $channel->id }}, 'all')">за всё время</a></li>
+          </ul>
 
             <div style="display: none" class="spoiler_body">
               <ul id="{{ $channel->id }}" class="list-group list-group-flush">
@@ -133,28 +135,28 @@
 <script type="text/javascript">
   $(document).ready(function(){
       $('.spoiler_links_day').click(function(){
-          $(this).parent().children('.spoiler_body').show('normal');
+          $(this).parent().parent().parent().children('.spoiler_body').show('normal');
 
           return false;
       });
       $('.spoiler_links_week').click(function(){
-          $(this).parent().children('.spoiler_body').show('normal');
+          $(this).parent().parent().parent().children('.spoiler_body').show('normal');
 
           return false;
       });
       $('.spoiler_links_year').click(function(){
-          $(this).parent().children('.spoiler_body').show('normal');
+          $(this).parent().parent().parent().children('.spoiler_body').show('normal');
 
           return false;
       });
       $('.spoiler_links_all').click(function(){
-          $(this).parent().children('.spoiler_body').show('normal');
+          $(this).parent().parent().parent().children('.spoiler_body').show('normal');
 
           return false;
       });
 
       $('.spoiler_links_hide').click(function(){
-          $(this).parent().parent().children('.spoiler_body').hide('normal');
+          $(this).parent().hide('normal');
 
           return false;
       });

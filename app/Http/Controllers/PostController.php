@@ -15,6 +15,7 @@ use function compact;
 use function dd;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function json_encode;
 use Khill\Lavacharts\Lavacharts;
@@ -88,36 +89,36 @@ class PostController extends Controller
         return view('posts.show', compact('post'));
     }
 
-    public function confirmation()
+    public function adding()
     {
-//        foreach (Untrusted_post::whereTime('created_at', '<', Carbon::now()->subMinutes(30))->get() as $post) {
-//            $post->delete();
-//        }
-//
-//        $post = Untrusted_post::make();
-//
-//        $post->name = "Post";
-//        $post->code = rand(10, 99);
-//
-//        $post->save();
-        $posts = Untrusted_post::all();
-
-        return view('posts.confirmation', compact('posts'));
+        return view('posts.adding');
     }
 
-    public function confirm(Untrusted_post $untrusted_post)
+    public function confirm(Request $request)
     {
-        Untrusted_post::destroy($untrusted_post->id);
+        $untrusted_post = Untrusted_post::all()->where('mac_address', $request->mac)->first();
 
-        $post = Post::make();
+        if (!$untrusted_post) {
+            return redirect(route('posts.adding'));
+        }
 
-        $post->name = $untrusted_post->name;
-        $post->mac_address = $untrusted_post->mac_address;
+        if ($untrusted_post->code == $request->code) {
+            Untrusted_post::destroy($untrusted_post->id);
 
-        $post->default_longitude = 42.205;
-        $post->default_latitude = 47.516;
+            $post = Post::make();
 
-        $post->save();
+            $post->name = $request->name;
+            $post->mac_address = $request->mac;
+            $post->code = $request->code;
+            $post->user_id = Auth::user()->id;
+
+            $post->default_longitude = 42.205;
+            $post->default_latitude = 47.516;
+
+            $post->save();
+        } else {
+            return redirect(route('posts.adding'));
+        }
 
         return redirect(route('posts.show', compact('post')));
     }
@@ -128,5 +129,17 @@ class PostController extends Controller
         $post->update(['default_longitude' => $request->longitude]);
 
         return redirect(route('posts.show', $post));
+    }
+
+    public function add_untrusted(Request $request)
+    {
+        $post = Untrusted_post::make();
+
+        $post->code = $request->code;
+        $post->mac_address = $request->mac_address;
+
+        $post->save();
+
+        return redirect(route('home'));
     }
 }
